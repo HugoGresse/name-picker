@@ -1,0 +1,9 @@
+@import '~antd/dist/antd.css';
+
+
+.siderButton { display: none;}
+.siderRow { padding: 16px; width: 100%; min-width: 300px; }
+
+@media only screen and (max-width: 770px) {
+  .siderButton { display: inherit;}
+}
