@@ -25,7 +25,7 @@ class NameList extends Component {
   constructor(props) {
     super(props);
 
-    const selected = JSON.parse(localStorage.selectedName)
+    let selected = JSON.parse(localStorage.selectedName)
     if(!selected){
       selected = []
     }
