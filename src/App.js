@@ -93,6 +93,7 @@ class App extends Component {
         })
         return keep
       })
+      .sort()
 
     if(this.state.sortFrequency.length > 0){
       names = names.sort( (a, b) => {
