@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "antd/lib/";
 
-const { Column, ColumnGroup } = Table;
-
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
@@ -30,7 +28,8 @@ class NameList extends Component {
     this.state = {
       page: 1,
       startItem: 0,
-      itemPerPage: 200
+      itemPerPage: 200,
+      selected: JSON.parse(localStorage.selectedName)
     };
   }
 
@@ -51,13 +50,23 @@ class NameList extends Component {
       item.key = item.name
       return item
     })
-    const totalNames = this.props.names ? this.props.names.length : 1;
+
+    const rowSelection = {
+      selectedRowKeys: this.state.selected,
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.setState({
+          selected: selectedRowKeys
+        })
+        localStorage.setItem('selectedName', JSON.stringify(selectedRowKeys))
+      }
+    };
 
     return (
       <div>
         <Table
           columns={columns}
           dataSource={items}
+          rowSelection={rowSelection}
           pagination={{ position: 'both' , pageSize: 100 }}
           size="middle"
           onChange={this.onTableChange} />
