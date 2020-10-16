@@ -1,5 +1,6 @@
-import React, { Component } from "react"
-import { Table } from "antd/lib/"
+import React, { useEffect, useState } from "react"
+import { listenForRealtimeFavoritesNames, saveFavoritesNames } from './firebase/favoritesNamesStore'
+import { Table,  message } from 'antd'
 
 const columns = [{
     title: 'Name',
@@ -21,64 +22,59 @@ const columns = [{
     sorter: (a, b) => a.language.localeCompare(b.language),
 }]
 
-class NameList extends Component {
-    constructor(props) {
-        super(props)
+const NameList = ({ userId, names, onSave }) => {
+    const [favoritesNames, setFavoritesNames] = useState([])
 
-        const selectedRow = localStorage.selectedName
-        let selected = []
-        if (selectedRow) {
-            selected = JSON.parse(selectedRow)
-        }
-
-        this.state = {
-            page: 1,
-            startItem: 0,
-            itemPerPage: 200,
-            selected: selected
-        }
-    }
-
-    onPaginationChange = page => {
-        this.setState({
-            page: page,
-            startItem: (page - 1) * this.state.itemPerPage
-        })
-    }
-
-    onTableChange = () => {
-
-    }
-
-    render() {
-        const items = this.props.names
-            .map((item) => {
-                item.key = item.name
-                return item
+    useEffect(() => {
+        if(userId) {
+            onSave(true)
+            return listenForRealtimeFavoritesNames(userId, (names) => {
+                onSave(false)
+                setFavoritesNames(names)
             })
-
-        const rowSelection = {
-            selectedRowKeys: this.state.selected,
-            onChange: (selectedRowKeys, selectedRows) => {
-                this.setState({
-                    selected: selectedRowKeys
-                })
-                localStorage.setItem('selectedName', JSON.stringify(selectedRowKeys))
-            }
         }
+    }, [userId, onSave])
 
-        return (
-            <div>
-                <Table
-                    columns={columns}
-                    dataSource={items}
-                    rowSelection={rowSelection}
-                    pagination={{ position: 'both', pageSize: 100 }}
-                    size="middle"
-                    onChange={this.onTableChange}/>
-            </div>
-        )
+    const onRowSelectionChange = selectedRowKeys => {
+        if(userId) {
+            onSave(true)
+            saveFavoritesNames(userId, selectedRowKeys)
+                .then((success) => {
+                    onSave(false)
+                    if(!success) {
+                        message.error('Failed to save names to your account', 4);
+                    }
+                })
+
+        } else {
+            message.error('Login to save the names to your account', 4);
+        }
     }
+
+    const items = names
+        .map((item) => {
+            item.key = item.name
+            return item
+        })
+
+    const rowSelection = {
+        selectedRowKeys: favoritesNames,
+        onChange: (selectedRowKeys) => {
+            onRowSelectionChange(selectedRowKeys)
+        }
+    }
+
+    return (
+        <div>
+            <Table
+                columns={columns}
+                dataSource={items}
+                rowSelection={rowSelection}
+                pagination={{ position: 'both', pageSize: 100 }}
+                size="middle"/>
+
+        </div>
+    )
 }
 
 export default NameList
