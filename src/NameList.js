@@ -33,7 +33,7 @@ const NameList = ({ userId, names, onSave }) => {
                 setFavoritesNames(names)
             })
         }
-    }, [userId])
+    }, [userId, onSave])
 
     const onRowSelectionChange = selectedRowKeys => {
         if(userId) {

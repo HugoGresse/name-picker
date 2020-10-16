@@ -144,6 +144,11 @@ class NamePicker extends Component {
         this.setState({ sortFrequency: 'asc' })
     }
 
+    onNamesSave = isSaving => {
+        this.setState({
+            isSaving: isSaving
+        })
+    }
 
     render() {
         return (
@@ -184,11 +189,7 @@ class NamePicker extends Component {
                         <div>
                             <NameList
                                 userId={this.props.userId}
-                                onSave={isSaving => {
-                                    this.setState({
-                                        isSaving: isSaving
-                                    })
-                                }}
+                                onSave={this.onNamesSave}
                                 names={this.updateFilteredName()}/>
                         </div>
 
