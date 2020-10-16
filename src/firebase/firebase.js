@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/analytics'
+import 'firebase/auth'
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -12,6 +13,8 @@ const config = {
 
 const firebaseMain = firebase.initializeApp(config)
 export const firestore = firebaseMain.firestore()
+export const auth = firebase.auth
+export const authInstance = firebaseMain.auth()
 
 if (
     process.env.NODE_ENV === 'production' &&

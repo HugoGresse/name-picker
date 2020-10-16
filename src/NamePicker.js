@@ -3,8 +3,8 @@ import Prenoms from "./Prenoms.json"
 import Layout from "antd/lib/layout"
 
 import NameList from './NameList'
-import { Row,  Button, Col } from 'antd'
-import Icon from '@ant-design/icons'
+import { Row, Col, Spin } from 'antd'
+import { MenuOutlined } from '@ant-design/icons'
 import SideBar from './SideBar'
 
 class NamePicker extends Component {
@@ -171,28 +171,11 @@ class NamePicker extends Component {
 
                             <Col span={24} style={{ display: 'flex', alignItems: 'strech' }}>
 
-                                <Icon
-                                    style={{
-                                        width: '50px',
-                                        minWidth: "50px",
-                                        cursor: 'pointer',
-                                        background: '#f33434',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center'
-                                    }}
-                                    className="siderButton"
-                                    type={this.state.siderCollapsed ? 'menu-unfold' : 'menu-fold'}
-                                    onClick={this.toggleSider}
-                                />
-                                <div
-                                    style={{ padding: '16px', width: '100%' }}>
-                                    Trier par
-                                    <Button.Group style={{ marginLeft: '16px' }}>
-                                        <Button disabled ghost style={{ color: 'white' }}>Fréquence</Button>
-                                        <Button onClick={this.onFrequencyFilterDown}><Icon type="down"/></Button>
-                                        <Button onClick={this.onFrequencyFilterUp}><Icon type="up"/></Button>
-                                    </Button.Group>
+                                <MenuOutlined onClick={this.toggleSider}
+                                              className="siderButton"/>
+
+                                <div className="loader" style={{ opacity: this.state.isSaving ? 1: 0}}>
+                                    <Spin />
                                 </div>
                             </Col>
 
@@ -200,6 +183,12 @@ class NamePicker extends Component {
 
                         <div>
                             <NameList
+                                userId={this.props.userId}
+                                onSave={isSaving => {
+                                    this.setState({
+                                        isSaving: isSaving
+                                    })
+                                }}
                                 names={this.updateFilteredName()}/>
                         </div>
 

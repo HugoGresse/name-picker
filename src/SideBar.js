@@ -105,6 +105,7 @@ const SideBar = ({
 
             <Button onClick={onResetClick}>Reset filters</Button>
 
+
             <Button type="primary" onClick={() => {
                 if (isLoggedIn) {
                     onLoginRequired(false)

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { StyledFirebaseAuth } from 'react-firebaseui'
-import * as firebase from 'firebase'
 import { Modal, Button } from 'antd'
+import { authInstance, auth } from './firebase/firebase'
 
 const uiConfig = {
     // Popup signin flow rather than redirect flow.
@@ -10,7 +10,7 @@ const uiConfig = {
     signInSuccessUrl: '/',
     // We will display Google and Facebook as auth providers.
     signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        auth.GoogleAuthProvider.PROVIDER_ID
     ],
     callbacks: {
         // Avoid redirects after sign-in.
@@ -20,7 +20,7 @@ const uiConfig = {
 
 const Login = ({ onLoggedIn, onLoggedOut, onLoginFailed, requireLogin }) => {
     useEffect(() => {
-        return firebase.auth().onAuthStateChanged(
+        return authInstance.onAuthStateChanged(
             (user) => {
                 if (user) {
                     onLoggedIn(user)
@@ -31,9 +31,7 @@ const Login = ({ onLoggedIn, onLoggedOut, onLoginFailed, requireLogin }) => {
         )
     })
 
-    console.log("rr", requireLogin)
     return <>
-
         <Modal
             title="Pick your login method"
             visible={requireLogin}
@@ -44,21 +42,18 @@ const Login = ({ onLoggedIn, onLoggedOut, onLoginFailed, requireLogin }) => {
 
             }}
             onCancel={() => {
-                console.log("cancel")
                 onLoginFailed()
             }}
             footer={null}
         >
-            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={authInstance}/>
 
             <Button type="ghost" onClick={() => {
                 onLoginFailed()
             }}>Cancel</Button>
 
         </Modal>
-
     </>
-
 }
 
 export default Login
