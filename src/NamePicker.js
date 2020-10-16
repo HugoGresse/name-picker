@@ -7,20 +7,23 @@ import { Row, Col, Spin } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
 import SideBar from './SideBar'
 
+const INITIAL_STATE = {
+    forbiddenStartLetter: [],
+    requiredLetters:[],
+    forbiddenLetter: [],
+    forbiddenName: '',
+    language: [],
+    gender: '',
+    sortFrequency: '',
+    siderCollapsed: false
+}
+
 class NamePicker extends Component {
 
     constructor(props) {
         super(props)
 
-        this.state = {
-            forbiddenStartLetter: [],
-            forbiddenLetter: [],
-            forbiddenName: '',
-            language: [],
-            gender: '',
-            sortFrequency: '',
-            siderCollapsed: false
-        }
+        this.state = INITIAL_STATE
     }
 
     toggleSider = () => {
@@ -73,17 +76,23 @@ class NamePicker extends Component {
             })
             // Middle char
             .filter(item => {
-                if (this.state.forbiddenLetter.length === 0) {
-                    return true
-                }
                 // Remove accent and remove the first char
                 let chars = item.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").slice(1)
                 let keep = true
-                this.state.forbiddenLetter.forEach(letter => {
-                    if (chars.includes(letter)) {
-                        keep = false
-                    }
-                })
+                if(this.state.requiredLetters.length > 0) {
+                    this.state.requiredLetters.forEach(letter => {
+                        if (!chars.includes(letter)) {
+                            keep = false
+                        }
+                    })
+                }
+                if (this.state.forbiddenLetter.length > 0) {
+                    this.state.forbiddenLetter.forEach(letter => {
+                        if (chars.includes(letter)) {
+                            keep = false
+                        }
+                    })
+                }
                 return keep
             })
             .sort()
@@ -118,6 +127,10 @@ class NamePicker extends Component {
         this.setState({ forbiddenLetter: value })
     }
 
+    onRequiredLetterChange = (value) => {
+        this.setState({ requiredLetters: value })
+    }
+
     onForbiddenStartLetterChange = (value) => {
         this.setState({ forbiddenStartLetter: value })
     }
@@ -127,13 +140,7 @@ class NamePicker extends Component {
     }
 
     onResetClick = () => {
-        this.setState({
-            forbiddenStartLetter: [],
-            forbiddenLetter: [],
-            forbiddenName: '',
-            language: [],
-            gender: ''
-        })
+        this.setState(INITIAL_STATE)
     }
 
     onFrequencyFilterDown = () => {
@@ -158,6 +165,7 @@ class NamePicker extends Component {
                         siderCollapsed={this.state.siderCollapsed}
                         forbiddenLetter={this.state.forbiddenLetter}
                         forbiddenStartLetter={this.state.forbiddenStartLetter}
+                        requiredLetters={this.state.requiredLetters}
                         gender={this.state.gender}
                         language={this.state.language}
                         onLoginRequired={this.props.onLoginRequired}
@@ -168,6 +176,7 @@ class NamePicker extends Component {
                         onGenderEnable={this.onGenderEnable}
                         onLanguageChange={this.onLanguageChange}
                         onResetClick={this.onResetClick}
+                        onRequiredLetterChange={this.onRequiredLetterChange}
                         />
 
                     <Layout.Content style={{ minWidth: "350px" }}>
@@ -201,7 +210,7 @@ class NamePicker extends Component {
                     Name Picker - <a
                     rel="noopener noreferrer"
                     target="_blank"
-                    href="https://hugo.gresse.io">Hugo Gresse</a>
+                    href="https://github.com/HugoGresse/name-picker">Open Source project on GitHub, by Hugo Gresse</a>
                 </Layout.Footer>
 
             </Layout>

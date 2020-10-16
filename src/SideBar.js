@@ -3,6 +3,7 @@ import { Button, Checkbox, Col, Row, Select, Switch } from 'antd'
 import logo from './logo.svg'
 import Layout from 'antd/lib/layout'
 import { getLanguagesOptions } from './data/getLanguagesOptions'
+import { GithubOutlined } from "@ant-design/icons"
 
 const getAlphabetOptions = () => {
     const options = []
@@ -29,7 +30,9 @@ const SideBar = ({
                      onForbiddenLetterChange,
                      onForbiddenStartLetterChange,
                      forbiddenStartLetter,
-                     onResetClick
+                     onResetClick,
+                    requiredLetters,
+    onRequiredLetterChange
                  }) => {
 
 
@@ -51,68 +54,96 @@ const SideBar = ({
 
         <Row className="siderRow">
 
-            <Checkbox
-                checked={gender.length > 0}
-                onChange={onGenderEnable}/>
-            <span>C'est un(e) </span>
-            <Switch
-                checked={gender === 'm'}
-                onChange={onGenderChanger}
-                checkedChildren="garçon"
-                unCheckedChildren="fille"/>
 
-            <br/>
-
-            <h5 style={{ marginTop: '16px' }}>Languages</h5>
-            <Select
-                showSearch
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder="Languages"
-                optionFilterProp="children"
-                value={language}
-                onChange={onLanguageChange}
-                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            >
-                {getLanguagesOptions()}
-            </Select>
-
-            <h5 style={{ marginTop: '16px' }}>Does not contain</h5>
-            <Select
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder=""
-                value={forbiddenLetter}
-                onChange={onForbiddenLetterChange}
-            >
-                {getAlphabetOptions()}
-            </Select>
-
-            <h5 style={{ marginTop: '16px' }}>Ne commence pas par</h5>
-
-            <Select
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder=""
-                value={forbiddenStartLetter}
-                onChange={onForbiddenStartLetterChange}
-            >
-                {getAlphabetOptions()}
-            </Select>
-
-            <br/>
-            <br/>
-
-            <Button onClick={onResetClick}>Reset filters</Button>
+            <Col span={24}>
+                <Checkbox
+                    checked={gender.length > 0}
+                    onChange={onGenderEnable}/>
+                <span>C'est un(e) </span>
+                <Switch
+                    checked={gender === 'm'}
+                    onChange={onGenderChanger}
+                    checkedChildren="garçon"
+                    unCheckedChildren="fille"/>
+            </Col>
 
 
-            <Button type="primary" onClick={() => {
-                if (isLoggedIn) {
-                    onLoginRequired(false)
-                } else {
-                    onLoginRequired(true)
-                }
-            }}>{isLoggedIn ? "Logout" : "Login to save selected names"}</Button>
+            <Col span={24}>
+                <h5 style={{ marginTop: '16px' }}>Languages</h5>
+            </Col>
+            <Col span={24}>
+                <Select
+                    showSearch
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder="Languages"
+                    optionFilterProp="children"
+                    value={language}
+                    onChange={onLanguageChange}
+                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                    {getLanguagesOptions()}
+                </Select>
+            </Col>
+
+            <Col span={24}>
+                <h5 style={{ marginTop: '16px' }}>Does contain</h5>
+            </Col>
+            <Col span={24}>
+                <Select
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder=""
+                    value={requiredLetters}
+                    onChange={onRequiredLetterChange}
+                >
+                    {getAlphabetOptions()}
+                </Select>
+            </Col>
+
+            <Col span={24}>
+                <h5 style={{ marginTop: '16px' }}>Does NOT contain</h5>
+            </Col>
+            <Col span={24}>
+                <Select
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder=""
+                    value={forbiddenLetter}
+                    onChange={onForbiddenLetterChange}
+                >
+                    {getAlphabetOptions()}
+                </Select>
+            </Col>
+
+            <Col span={24}>
+                <h5 style={{ marginTop: '16px' }}>Doest NOT begin with</h5>
+            </Col>
+            <Col span={24}>
+                <Select
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder=""
+                    value={forbiddenStartLetter}
+                    onChange={onForbiddenStartLetterChange}
+                >
+                    {getAlphabetOptions()}
+                </Select>
+            </Col>
+
+            <Col span={24}>
+                <Button onClick={onResetClick} style={{ marginTop: 16 }}>Reset filters</Button>
+            </Col>
+            <Col span={24}>
+                <Button type="primary" style={{ marginTop: 16 }}
+                        onClick={() => {
+                            if (isLoggedIn) {
+                                onLoginRequired(false)
+                            } else {
+                                onLoginRequired(true)
+                            }
+                        }}>{isLoggedIn ? "Logout" : "Login to save selected names"}</Button>
+            </Col>
 
         </Row>
     </Layout.Sider>
