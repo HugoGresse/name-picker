@@ -155,6 +155,8 @@ class NamePicker extends Component {
                         forbiddenStartLetter={this.state.forbiddenStartLetter}
                         gender={this.state.gender}
                         language={this.state.language}
+                        onLoginRequired={this.props.onLoginRequired}
+                        isLoggedIn={this.props.isLoggedIn}
                         onForbiddenLetterChange={this.onForbiddenLetterChange}
                         onForbiddenStartLetterChange={this.onForbiddenStartLetterChange}
                         onGenderChanger={this.onGenderChanger}

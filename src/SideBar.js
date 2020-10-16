@@ -16,10 +16,24 @@ const getAlphabetOptions = () => {
 }
 
 
-const SideBar = ({siderCollapsed, onGenderEnable, onGenderChanger, onLanguageChange, gender, language, forbiddenLetter, onForbiddenLetterChange, onForbiddenStartLetterChange, forbiddenStartLetter, onResetClick}) => {
+const SideBar = ({
+                     siderCollapsed,
+                     onLoginRequired,
+                     isLoggedIn,
+                     onGenderEnable,
+                     onGenderChanger,
+                     onLanguageChange,
+                     gender,
+                     language,
+                     forbiddenLetter,
+                     onForbiddenLetterChange,
+                     onForbiddenStartLetterChange,
+                     forbiddenStartLetter,
+                     onResetClick
+                 }) => {
 
 
-    return  <Layout.Sider
+    return <Layout.Sider
         trigger={null}
         collapsible
         breakpoint="lg"
@@ -91,6 +105,13 @@ const SideBar = ({siderCollapsed, onGenderEnable, onGenderChanger, onLanguageCha
 
             <Button onClick={onResetClick}>Reset filters</Button>
 
+            <Button type="primary" onClick={() => {
+                if (isLoggedIn) {
+                    onLoginRequired(false)
+                } else {
+                    onLoginRequired(true)
+                }
+            }}>{isLoggedIn ? "Logout" : "Login to save selected names"}</Button>
 
         </Row>
     </Layout.Sider>
