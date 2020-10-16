@@ -3,7 +3,6 @@ import { Button, Checkbox, Col, Row, Select, Switch } from 'antd'
 import logo from './logo.svg'
 import Layout from 'antd/lib/layout'
 import { getLanguagesOptions } from './data/getLanguagesOptions'
-import { GithubOutlined } from "@ant-design/icons"
 
 const getAlphabetOptions = () => {
     const options = []
