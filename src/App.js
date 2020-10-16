@@ -197,7 +197,7 @@ class App extends Component {
                         <Row className="siderRow">
 
                             <Col span={24} style={{ textAlign: 'center' }}>
-                                <img src={logo} style={{ maxWidth: "200px" }}/>
+                                <img src={logo} style={{ maxWidth: "200px" }} alt="Logo"/>
                             </Col>
                         </Row>
 
