@@ -3,9 +3,13 @@ import React from 'react'
 
 import Prenoms from "../Prenoms.json"
 
+let langOptions = []
+
 export const getLanguagesOptions = () => {
+    if(langOptions.length > 0) {
+        return langOptions
+    }
     const languages = []
-    const options = []
     let innerLanguage = []
 
     for (let i = 0, len = Prenoms.length; i < len; i++) {
@@ -21,9 +25,34 @@ export const getLanguagesOptions = () => {
     languages
         .sort()
         .forEach(lang => {
-            options.push(<Select.Option key={lang}>{lang}</Select.Option>)
+            langOptions.push(<Select.Option key={lang}>{lang}</Select.Option>)
         })
 
-    return options
+    return langOptions
+}
 
+let letterList = []
+export const getLetterList = () => {
+    if(letterList.length >0) {
+        return letterList
+    }
+
+    const letters = Prenoms.reduce((acc, name) => {
+        name.name.split("").forEach(letter => {
+            if(!acc[letter]) {
+                acc[letter] = 1
+            }
+        })
+        return acc
+    }, {})
+
+    letterList= Object.keys(letters).filter(isLetter)
+
+
+    console.log(letters)
+
+    return letterList
+}
+function isLetter(c) {
+    return c.toLowerCase() !== c.toUpperCase();
 }

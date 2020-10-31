@@ -2,11 +2,11 @@ import React from 'react'
 import { Button, Checkbox, Col, Row, Select, Switch } from 'antd'
 import logo from './logo.svg'
 import Layout from 'antd/lib/layout'
-import { getLanguagesOptions } from './data/getLanguagesOptions'
+import { getLanguagesOptions, getLetterList } from './data/getLanguagesOptions'
 
 const getAlphabetOptions = () => {
     const options = []
-    const alphabet = ['a', 'æ', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    const alphabet = getLetterList()
 
     alphabet.forEach((e) => {
         options.push(<Select.Option key={e}>{e}</Select.Option>)
@@ -31,7 +31,9 @@ const SideBar = ({
                      forbiddenStartLetter,
                      onResetClick,
                     requiredLetters,
-    onRequiredLetterChange
+    onRequiredLetterChange,
+    keepAccentOnFilters,
+    keepAccentOnFiltersChange
                  }) => {
 
 
@@ -128,6 +130,10 @@ const SideBar = ({
                 >
                     {getAlphabetOptions()}
                 </Select>
+            </Col>
+
+            <Col span={24}>
+                <Checkbox checked={keepAccentOnFilters} onChange={(e) => keepAccentOnFiltersChange(e.target.checked)}>Keep accent on filters</Checkbox>
             </Col>
 
             <Col span={24}>

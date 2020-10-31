@@ -15,7 +15,8 @@ const INITIAL_STATE = {
     language: [],
     gender: '',
     sortFrequency: '',
-    siderCollapsed: false
+    siderCollapsed: false,
+    keepAccentOnFilters: true
 }
 
 class NamePicker extends Component {
@@ -77,7 +78,7 @@ class NamePicker extends Component {
             // Middle char
             .filter(item => {
                 // Remove accent and remove the first char
-                let chars = item.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").slice(1)
+                let chars = this.state.keepAccentOnFilters ? item.name.slice(1) : item.name.slice(1).normalize('NFD').replace(/[\u0300-\u036f]/g, "")
                 let keep = true
                 if(this.state.requiredLetters.length > 0) {
                     this.state.requiredLetters.forEach(letter => {
@@ -151,6 +152,11 @@ class NamePicker extends Component {
         this.setState({ sortFrequency: 'asc' })
     }
 
+    keepAccentOnFiltersChange = shouldKeep => {
+        this.setState({ keepAccentOnFilters: shouldKeep })
+
+    }
+
     onNamesSave = isSaving => {
         this.setState({
             isSaving: isSaving
@@ -177,6 +183,8 @@ class NamePicker extends Component {
                         onLanguageChange={this.onLanguageChange}
                         onResetClick={this.onResetClick}
                         onRequiredLetterChange={this.onRequiredLetterChange}
+                        keepAccentOnFilters={this.state.keepAccentOnFilters}
+                        keepAccentOnFiltersChange={this.keepAccentOnFiltersChange}
                         />
 
                     <Layout.Content style={{ minWidth: "350px" }}>
