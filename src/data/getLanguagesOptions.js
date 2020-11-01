@@ -47,10 +47,6 @@ export const getLetterList = () => {
     }, {})
 
     letterList= Object.keys(letters).filter(isLetter)
-
-
-    console.log(letters)
-
     return letterList
 }
 function isLetter(c) {
